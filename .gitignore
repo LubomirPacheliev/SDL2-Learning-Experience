@@ -1,4 +1,2 @@
 .vscode
-bin/debug/*
-bin/release/*
 *.o
