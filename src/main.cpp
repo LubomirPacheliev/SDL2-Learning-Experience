@@ -17,7 +17,11 @@ int main(int argc, char *argv[])
     RenderWindow window("GAM v0.0.1", 1280, 720);
 
     SDL_Texture *grassTexture = window.loadTexture("res/gfx/ground_grass_1.png");
-    Entity platform0(100, 50, grassTexture);
+    Entity entities[4] = {
+        Entity(90, 80, grassTexture),
+        Entity(120, 80, grassTexture),
+        Entity(150, 80, grassTexture),
+        Entity(180, 80, grassTexture)};
 
     bool gameRunning = true;
     SDL_Event event;
@@ -33,7 +37,12 @@ int main(int argc, char *argv[])
         }
 
         window.clear();
-        window.render(platform0);
+
+        for (int i = 0; i < 4; i++)
+        {
+            window.render(entities[i]);
+        }
+
         window.display();
     }
 
