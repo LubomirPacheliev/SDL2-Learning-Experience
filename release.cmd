@@ -1,0 +1,1 @@
+g++ -c src/*.cpp --std=c++14 -O3 -Wall -m64 -I include -I C:/mingw64/include/SDL2/include && g++ *.o -o bin/release/main -s -L C:/mingw64/include/SDL2/lib -l mingw32 -l SDL2 -l SDL2_image && start bin/release/main
