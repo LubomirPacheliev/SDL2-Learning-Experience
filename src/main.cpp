@@ -6,6 +6,7 @@
 
 #include "RenderWindow.hpp"
 #include "Entity.hpp"
+#include "Utils.hpp"
 
 int main(int argc, char *argv[])
 {
@@ -16,6 +17,7 @@ int main(int argc, char *argv[])
         std::cout << "Now IMG_Init has forsaken us like a mf... " << SDL_GetError() << std::endl;
 
     RenderWindow window("GAM v0.0.1", 1280, 720);
+    int windowRefreshRate = window.getRefreshRate();
 
     SDL_Texture *grassTexture = window.loadTexture("res/gfx/ground_grass_1.png");
     std::vector<Entity> entities = {
@@ -31,15 +33,34 @@ int main(int argc, char *argv[])
     bool gameRunning = true;
     SDL_Event event;
 
+    const float timeStep = 0.01f;
+    float accumulator = 0.0f;
+    float currentTime = uitls::hireTimeInSeconds();
+
     while (gameRunning)
     {
-        while (SDL_PollEvent(&event))
+        int startTicks = SDL_GetTicks64();
+        float newTime = uitls::hireTimeInSeconds();
+        float frameTime = newTime - currentTime;
+
+        currentTime = newTime;
+
+        accumulator += frameTime;
+
+        while (accumulator >= timeStep)
         {
-            if (event.type == SDL_QUIT)
+            while (SDL_PollEvent(&event))
             {
-                gameRunning = false;
+                if (event.type == SDL_QUIT)
+                {
+                    gameRunning = false;
+                }
             }
+
+            accumulator -= timeStep;
         }
+
+        const float alpha = accumulator / timeStep;
 
         window.clear();
 
@@ -49,6 +70,10 @@ int main(int argc, char *argv[])
         }
 
         window.display();
+
+        int frameTicks = SDL_GetTicks64() - startTicks;
+        if (frameTicks < 1000 / window.getRefreshRate())
+            SDL_Delay(1000 / window.getRefreshRate() - frameTicks);
     }
 
     window.cleanUp();

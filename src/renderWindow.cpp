@@ -13,7 +13,7 @@ RenderWindow::RenderWindow(const char *title, int width, int height) : window(NU
     if (window == NULL)
         std::cout << "Da window has forsaken us... " << SDL_GetError() << std::endl;
 
-    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED && SDL_RENDERER_PRESENTVSYNC);
 }
 
 SDL_Texture *RenderWindow::loadTexture(const char *filePath)
@@ -23,6 +23,14 @@ SDL_Texture *RenderWindow::loadTexture(const char *filePath)
     if (texture == NULL)
         std::cout << "Failed to load a texture. Error: " << SDL_GetError() << std::endl;
     return texture;
+}
+
+int RenderWindow::getRefreshRate()
+{
+    int displayIndex = SDL_GetWindowDisplayIndex(window);
+    SDL_DisplayMode mode;
+    SDL_GetDisplayMode(displayIndex, 0, &mode);
+    return mode.refresh_rate;
 }
 
 void RenderWindow::clear()
