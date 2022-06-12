@@ -19,12 +19,12 @@ int main(int argc, char *argv[])
 
     SDL_Texture *grassTexture = window.loadTexture("res/gfx/ground_grass_1.png");
     std::vector<Entity> entities = {
-        Entity(90, 80, grassTexture),
-        Entity(120, 80, grassTexture),
-        Entity(150, 80, grassTexture),
-        Entity(180, 80, grassTexture)};
+        Entity(Vector2f(90, 80), grassTexture),
+        Entity(Vector2f(120, 80), grassTexture),
+        Entity(Vector2f(150, 80), grassTexture),
+        Entity(Vector2f(180, 80), grassTexture)};
     {
-        Entity randomGrassBroski(210, 80, grassTexture);
+        Entity randomGrassBroski(Vector2f(210, 80), grassTexture);
         entities.push_back(randomGrassBroski);
     }
 
